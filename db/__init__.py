@@ -13,9 +13,12 @@ class Subscription(object):
             tb.print_exc()
             self.subscription = {}
 
-    def add(self, x):
-        if x not in self.subscription:
-            self.subscription[x] = 0 # start item 
+    def add(self, x, mode):
+        if x not in self.subscription or self.subscription[x]['mode'] != mode:
+            self.subscription[x] = {
+                "start": 0,
+                "mode": mode,
+            }
         self.save()
 
     def remove(self, x):
@@ -44,44 +47,25 @@ class Pool(object):
         with open(self.db, 'w') as f:
             f.write(yaml.dump(self.pool, sort_keys=True, indent=2))
 
-class SUBSCRIPTION(object):
+class Sent(object):
     def __init__(self):
+        self.db = "db/sent.yaml"
         try:
-            with open('subscription.yaml') as f:
-                self.SUBSCRIPTION = yaml.load(f, Loader=yaml.FullLoader)
+            with open(self.db) as f:
+                self.sent = yaml.load(f, Loader=yaml.FullLoader)
         except Exception as e:
             print(e)
             tb.print_exc()
-            self.SUBSCRIPTION = {}
+            self.sent = set()
 
-    def getList(self, chat_id):
-        return self.SUBSCRIPTION.get(chat_id, [])
-
-    def deleteIndex(self, chat_id, index):
-        try:
-            del self.SUBSCRIPTION[chat_id][index]
-            self.save()
-            return 'success'
-        except Exception as e:
-            return str(e)
-
-    def getSubsribers(self, chat_id):
-        result = []
-        for subscriber, items in self.SUBSCRIPTION.items():
-            for item in items:
-                if item['id'] == chat_id:
-                    result.append(subscriber)
-                    break
-        return result
-
-    def add(self, chat_id, chat):
-        self.SUBSCRIPTION[chat_id] = self.SUBSCRIPTION.get(chat_id, [])
-        if chat['id'] in [x['id'] for x in self.SUBSCRIPTION[chat_id]]:
-            return 'FAIL: subscripion already exist.'
-        self.SUBSCRIPTION[chat_id].append(chat)
+    def forget(self, gid):
+        self.sent = set([(x, url) for x, url in self.sent if x != gid])
         self.save()
-        return 'success'
+
+    def add(self, gid, url):
+        self.sent.add((gid, url))
+        self.save()
 
     def save(self):
-        with open('subscription.yaml', 'w') as f:
-            f.write(yaml.dump(self.SUBSCRIPTION, sort_keys=True, indent=2))
+        with open(self.db, 'w') as f:
+            f.write(yaml.dump(self.sent, sort_keys=True, indent=2))
