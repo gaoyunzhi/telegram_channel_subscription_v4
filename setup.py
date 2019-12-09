@@ -1,7 +1,7 @@
 import os
 import sys
 
-EXE_FILE = 'cn_article_daily'
+EXE_FILE = 'channel_subscription_v4'
 
 def kill():
 	os.system("ps aux | grep ython | grep %s | awk '{print $2}' | xargs kill -9" % EXE_FILE)

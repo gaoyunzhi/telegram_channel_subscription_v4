@@ -2,6 +2,28 @@ import traceback as tb
 import yaml
 import time
 
+class _Source(object):
+    def __init__(self):
+        self.db = "db/source.yaml"
+        try:
+            with open(self.db) as f:
+                self.source = yaml.load(f, Loader=yaml.FullLoader)
+        except Exception as e:
+            print(e)
+            tb.print_exc()
+            self.source = {}
+
+    def add(self, chat):
+        self.source.add(chat.id);
+        self.save()
+
+    def remove(self, chat):
+        self.source.pop(chat.id, None)
+
+    def save(self):
+        with open(self.db, 'w') as f:
+            f.write(yaml.dump(self.source, sort_keys=True, indent=2))
+
 class _Subscription(object):
     def __init__(self):
         self.db = "db/subscription.yaml"
@@ -26,7 +48,7 @@ class _Subscription(object):
 
     def save(self):
         with open(self.db, 'w') as f:
-            f.write(yaml.dump(self.pool, sort_keys=True, indent=2))
+            f.write(yaml.dump(self.subscription, sort_keys=True, indent=2))
 
 class _Pool(object):
     def __init__(self):
@@ -74,3 +96,4 @@ class _Sent(object):
 Subscription = _Subscription()
 Sent = _Sent()
 Pool = _Pool()
+Source = _Source()
