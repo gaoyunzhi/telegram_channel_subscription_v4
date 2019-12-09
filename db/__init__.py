@@ -2,7 +2,7 @@ import traceback as tb
 import yaml
 import time
 
-class Subscription(object):
+class _Subscription(object):
     def __init__(self):
         self.db = "db/subscription.yaml"
         try:
@@ -28,7 +28,7 @@ class Subscription(object):
         with open(self.db, 'w') as f:
             f.write(yaml.dump(self.pool, sort_keys=True, indent=2))
 
-class Pool(object):
+class _Pool(object):
     def __init__(self):
         self.db = "db/pool.yaml"
         try:
@@ -47,7 +47,7 @@ class Pool(object):
         with open(self.db, 'w') as f:
             f.write(yaml.dump(self.pool, sort_keys=True, indent=2))
 
-class Sent(object):
+class _Sent(object):
     def __init__(self):
         self.db = "db/sent.yaml"
         try:
@@ -58,14 +58,19 @@ class Sent(object):
             tb.print_exc()
             self.sent = set()
 
-    def forget(self, gid):
-        self.sent = set([(x, url) for x, url in self.sent if x != gid])
+    def forget(self, x):
+        self.sent.pop(x, None)
         self.save()
 
     def add(self, gid, url):
-        self.sent.add((gid, url))
+        if not gid in self.sent:
+            self.sent[gid] = set()
         self.save()
 
     def save(self):
         with open(self.db, 'w') as f:
             f.write(yaml.dump(self.sent, sort_keys=True, indent=2))
+
+Subscription = _Subscription()
+Sent = _Sent()
+Pool = _Pool()
