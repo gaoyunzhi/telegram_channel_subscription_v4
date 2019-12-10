@@ -12,6 +12,10 @@ from common import tele, debug_group
 from iterateMessage import iterateMessage
 import traceback as tb
 
+def getChatId(text):
+	text = text.split('/')[-1]
+	return tele.bot.getChat(text).id
+
 def commandImp(msg):
 	autoDestroy(msg)
 	command, text = splitCommand(msg.text)
@@ -19,9 +23,9 @@ def commandImp(msg):
 	if "s4_g" in command:
 		return msg.reply_text(iterateMessage(msg.chat.id), quote=False)
 	elif matchKey(command, ["s4_source_add", "s4_sa", "s4_a"]):
-		autoDestroy(msg.reply_text(Source.add(tele.bot.getChat(text).id)))
+		autoDestroy(msg.reply_text(Source.add(getChatId(text))))
 	elif matchKey(command, ["s4_source_delete", "s4_sd", "s4_d"]):
-		autoDestroy(msg.reply_text(Source.remove(tele.bot.getChat(text).id)))
+		autoDestroy(msg.reply_text(Source.remove(getChatId(text))))
 	elif matchKey(command, ["s4_source_list", "s4_sl", "s4_l"]):
 		pass # intentional
 	elif matchKey(command, ["s4_sub", "s4_s"]):
