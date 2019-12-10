@@ -1,5 +1,7 @@
 from db import Sent, Pool, Subscription
 import random
+import export_to_telegraph
+from common import telegraph_token
 
 def iterateMessage(chat_id):
 	mode = Subscription.db.get(chat_id)
@@ -16,6 +18,8 @@ def iterateMessage(chat_id):
 	potential_urls.sort(reverse=True)
 	_, url = potential_urls[0]
 	Sent.add(chat_id, url)
-	return url
+	export_to_telegraph.token = telegraph_token
+	r = export_to_telegraph.export(url)
+	return r or url
 
 
