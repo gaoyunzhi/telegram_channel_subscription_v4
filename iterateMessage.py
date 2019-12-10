@@ -2,13 +2,17 @@ from db import Sent, Pool, Subscription
 import random
 import export_to_telegraph
 from common import telegraph_token
+import yaml
+
+with open('db/blacklist.yaml') as f:
+    blacklist = yaml.load(f, Loader=yaml.FullLoader)
 
 def iterateMessage(chat_id):
 	mode = Subscription.db.get(chat_id)
 	sent = Sent.db.get(chat_id, set())
 	potential_urls = [url for url in Pool.db \
-		if url not in sent and Pool.db[url]['language'] == mode]
-	if len(potential_urls) == 0:
+		if url not in sent and url not in blacklist and Pool.db[url]['language'] == mode]
+	if len(potential_urls) == 0 or len(sent) > len(potential_urls):
 		Sent.forget(chat_id)
 		potential_urls = [url for url in Pool.db \
 			if url not in sent and Pool.db[url]['language'] == mode]
