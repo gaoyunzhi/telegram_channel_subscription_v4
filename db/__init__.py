@@ -3,7 +3,7 @@ import yaml
 import time
 import export_to_telegraph
 from common import telegraph_token
-
+import re
 
 class _Source(object):
     def __init__(self):
@@ -61,6 +61,11 @@ class _Subscription(object):
         with open(self.db, 'w') as f:
             f.write(yaml.dump(self.subscription, sort_keys=True, indent=2))
 
+def getLan(title):
+    if re.search(u'[\u4e00-\u9fff]', title):
+        return 'zh'
+    return 'en'
+
 class _Pool(object):
     def __init__(self):
         self.db = "db/pool.yaml"
@@ -74,7 +79,10 @@ class _Pool(object):
 
     def add(self, x):
         export_to_telegraph.token = telegraph_token
-        self.pool[x] = export_to_telegraph.getView(x)
+        self.pool[x] = {
+            "view": export_to_telegraph.get(x['view']),
+            "language": getLan(x['title']),
+        }    
         self.save()
 
     def save(self):
