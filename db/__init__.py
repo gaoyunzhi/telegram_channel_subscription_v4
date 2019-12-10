@@ -88,6 +88,7 @@ class _Sent(DBClass):
     def add(self, gid, url):
         if not gid in self.db:
             self.db[gid] = set()
+        self.db[gid].add(url)
         self.save()
 
 Subscription = _Subscription()
