@@ -1,6 +1,9 @@
 import traceback as tb
 import yaml
 import time
+import export_to_telegraph
+from common import telegraph_token
+
 
 class _Source(object):
     def __init__(self):
@@ -14,11 +17,22 @@ class _Source(object):
             self.source = {}
 
     def add(self, chat):
-        self.source.add(chat.id);
-        self.save()
+        if chat.id not in self.source:
+            self.source[chat.id] = 0
+            self.save()
+            return 'success'
+        return 'source already added'
 
     def remove(self, chat):
-        self.source.pop(chat.id, None)
+        if chat.id in self.source:
+            self.source.pop(chat.id, None)
+            return 'success'
+        return 'no such source'
+
+    def iterate(self, chat_id, max):
+        while self.source[chat_id] < max:
+            self.source[chat_id] += 1
+            yield self.source[chat_id]
 
     def save(self):
         with open(self.db, 'w') as f:
@@ -37,10 +51,7 @@ class _Subscription(object):
 
     def add(self, x, mode):
         if x not in self.subscription or self.subscription[x]['mode'] != mode:
-            self.subscription[x] = {
-                "start": 0,
-                "mode": mode,
-            }
+            self.subscription[x] = mode
         self.save()
 
     def remove(self, x):
@@ -59,10 +70,11 @@ class _Pool(object):
         except Exception as e:
             print(e)
             tb.print_exc()
-            self.pool = set()
+            self.pool = {}
 
     def add(self, x):
-        self.pool.add()
+        export_to_telegraph.token = telegraph_token
+        self.pool[x] = export_to_telegraph.getView(x)
         self.save()
 
     def save(self):

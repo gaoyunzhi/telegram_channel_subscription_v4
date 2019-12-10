@@ -6,22 +6,22 @@ INTERVAL = 60 * 24 * 60
 from telegram.ext import Updater, MessageHandler, Filters
 
 from telegram_util import splitCommand, log_on_fail, autoDestroy, formatChat
-from db import Source
+from db import Source, Subscription
 import loop
 from .common import tele, debug_group
+from .iterateMessage import iterateMessage
 
 def commandImp(msg):
 	autoDestroy(msg)
 	command, text = splitCommand(msg.text)
 	if command == "s4_get":
-		pass # TODO
+		return msg.reply_text(quote=False, iterateMessage(msg.chat.id))
 	elif command == "s4_subscribe":
-		# subscription mode
-		pass # TODO
+		Subscription.add(msg.chat.id, text)
 	elif command == "s4_source_add":
-		Source.add(tele.bot.getChat(text).id)
+		autoDestroy(msg.reply_text(Source.add(tele.bot.getChat(text).id)))
 	elif command == "s4_source_delete":
-		Source.remove(tele.bot.getChat(text).id)
+		autoDestroy(msg.reply_text(Source.remove(tele.bot.getChat(text).id)))
 	elif command == "s4_source_list":
 		pass # intentional
 	else:
