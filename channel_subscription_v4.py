@@ -32,9 +32,7 @@ def commandImp(msg):
 		Subscription.add(msg.chat.id, text)
 	else:
 		return
-	print('here1.2')
 	if matchKey(command, ["s4_source", "s4_sl", "s4_l", "s4_sa", "s4_a", "s4_sd", "s3_d"]):
-		print('here2')
 		sources = [str(index) + ': ' + formatChat(tele.bot, chat_id) for \
             index, chat_id in enumerate(Source.source.keys())]
 		autoDestroy(msg.reply_text('Source list: \n\n' + '\n'.join(sources), 
@@ -44,16 +42,13 @@ def commandImp(msg):
 		autoDestroy(msg.reply_text("success"))
 
 def command(update, context):
-	print('here')
 	msg = update.effective_message
 	try:
 		commandImp(msg)
 	except Exception as e:
-		print('here3')
 		autoDestroy(msg.reply_text(str(e)))
 		tb.print_exc()
 		raise e
-	print('here4')
 
 tele.dispatcher.add_handler(MessageHandler(Filters.command, command))
 
