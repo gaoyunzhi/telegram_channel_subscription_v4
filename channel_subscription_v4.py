@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-INTERVAL = 60 * 24 * 60	
-
 from telegram.ext import Updater, MessageHandler, Filters
 
 from telegram_util import splitCommand, log_on_fail, autoDestroy, formatChat, matchKey, getChat
