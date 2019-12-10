@@ -18,9 +18,7 @@ def getMaxMessageId(soup):
 
 @log_on_fail(debug_group)
 def loopImp():
-	print('here1')
 	for chat_id in Source.source:
-		print('here2')
 		chat = tele.bot.getChat(chat_id)
 		# soup = getSoup('https://telete.in/s/' + chat.username)
 		max_message_id = 10 # getMaxMessageId(soup)

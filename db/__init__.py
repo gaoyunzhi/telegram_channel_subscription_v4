@@ -32,7 +32,7 @@ class _Source(object):
     def iterate(self, chat_id, max):
         while self.source[chat_id] < max:
             self.source[chat_id] += 1
-            save()
+            self.save()
             yield self.source[chat_id]
 
     def save(self):
