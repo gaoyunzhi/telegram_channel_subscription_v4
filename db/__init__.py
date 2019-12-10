@@ -30,9 +30,11 @@ class _Source(object):
         return 'no such source'
 
     def iterate(self, chat_id, max):
-        while self.source[chat_id] < max:
-            self.source[chat_id] += 1
-            yield self.source[chat_id]
+        return [167] # testing
+        # while self.source[chat_id] < max:
+        #     self.source[chat_id] += 1
+        #     save()
+        #     yield self.source[chat_id]
 
     def save(self):
         with open(self.db, 'w') as f:
@@ -98,7 +100,7 @@ class _Sent(object):
         except Exception as e:
             print(e)
             tb.print_exc()
-            self.sent = set()
+            self.sent = {}
 
     def forget(self, x):
         self.sent.pop(x, None)

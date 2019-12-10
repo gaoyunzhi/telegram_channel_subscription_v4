@@ -18,15 +18,25 @@ def getMaxMessageId(soup):
 
 @log_on_fail(debug_group)
 def loopImp():
+	print('here1')
 	for chat_id in Source.source:
+		print('here2')
 		chat = tele.bot.getChat(chat_id)
-		soup = getSoup('https://telete.in/s/' + chat.username)
-		max_message_id = getMaxMessageId(soup)
+		# soup = getSoup('https://telete.in/s/' + chat.username)
+		max_message_id = 10 # getMaxMessageId(soup)
+		print('here3', Source.iterate(chat_id, max_message_id))
 		for message_id in Source.iterate(chat_id, max_message_id):
+			print('here4')
+			print(message_id)
 			try:
-				msg = tele.bot.forward_message(test_channel, chat_id, message_id)
+				print('here')
+				print(max_message_id, test_channel, tele.bot.getChat(chat_id).username, message_id)
+				msg = tele.bot.forward_message(chat_id = test_channel, from_chat_id = chat_id, message_id = message_id)
 			except Exception as e:
 				print("Warning: forwarding error: " + str(e))
+				return # testing
+				continue
+			print('here')
 			for item in msg.entities:
 				if (item["type"] == "url"):
 					url = msg.text[item["offset"]:][:item["length"]]
