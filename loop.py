@@ -24,26 +24,18 @@ def loopImp():
 		chat = tele.bot.getChat(chat_id)
 		# soup = getSoup('https://telete.in/s/' + chat.username)
 		max_message_id = 10 # getMaxMessageId(soup)
-		print('here3', Source.iterate(chat_id, max_message_id))
+		username = tele.bot.getChat(chat_id).username
 		for message_id in Source.iterate(chat_id, max_message_id):
-			print('here4')
-			print(message_id)
-			try:
-				print('here')
-				print(max_message_id, test_channel, tele.bot.getChat(chat_id).username, message_id)
-				msg = tele.bot.forward_message(chat_id = test_channel, from_chat_id = chat_id, message_id = message_id)
-			except Exception as e:
-				print("Warning: forwarding error: " + str(e))
-				return # testing
+			url = "https://telete.in/%s/%d?embed=1" % (username, message_id)
+			soup = getSoup(url)
+			text = msg.find('div', class_='tgme_widget_message_text')
+			if not text:
 				continue
-			print('here')
-			for item in msg.entities:
-				if (item["type"] == "url"):
-					url = msg.text[item["offset"]:][:item["length"]]
-					if not '://' in url:
-						url = "https://" + url
-					if '://telegra.ph' in url:
-						Pool.add(url)
+			for url in text.text.split():
+				if not '://' in url:
+					url = "https://" + url
+				if '://telegra.ph' in url:
+					Pool.add(url)
 	for chat_id in Subscription.subscription:
 		tele.bot.send_message(iterateMessage(chat_id))
 

@@ -30,11 +30,10 @@ class _Source(object):
         return 'no such source'
 
     def iterate(self, chat_id, max):
-        return [167] # testing
-        # while self.source[chat_id] < max:
-        #     self.source[chat_id] += 1
-        #     save()
-        #     yield self.source[chat_id]
+        while self.source[chat_id] < max:
+            self.source[chat_id] += 1
+            save()
+            yield self.source[chat_id]
 
     def save(self):
         with open(self.db, 'w') as f:
