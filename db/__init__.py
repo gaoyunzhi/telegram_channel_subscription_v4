@@ -16,16 +16,16 @@ class _Source(object):
             tb.print_exc()
             self.source = {}
 
-    def add(self, chat):
-        if chat.id not in self.source:
-            self.source[chat.id] = 0
+    def add(self, chat_id):
+        if chat_id not in self.source:
+            self.source[chat_id] = 0
             self.save()
             return 'success'
         return 'source already added'
 
-    def remove(self, chat):
-        if chat.id in self.source:
-            self.source.pop(chat.id, None)
+    def remove(self, chat_id):
+        if chat_id in self.source:
+            self.source.pop(chat_id, None)
             return 'success'
         return 'no such source'
 

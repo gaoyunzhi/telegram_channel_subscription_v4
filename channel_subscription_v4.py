@@ -5,7 +5,7 @@ INTERVAL = 60 * 24 * 60
 
 from telegram.ext import Updater, MessageHandler, Filters
 
-from telegram_util import splitCommand, log_on_fail, autoDestroy, formatChat, matchKey
+from telegram_util import splitCommand, log_on_fail, autoDestroy, formatChat, matchKey, getChat
 from db import Source, Subscription
 import loop
 from common import tele, debug_group
@@ -13,8 +13,7 @@ from iterateMessage import iterateMessage
 import traceback as tb
 
 def getChatId(text):
-	text = text.split('/')[-1]
-	return tele.bot.getChat(text).id
+	return getChat(tele.bot, text).id
 
 def commandImp(msg):
 	autoDestroy(msg)
