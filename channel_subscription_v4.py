@@ -32,7 +32,7 @@ def commandImp(msg):
 	if matchKey(command, ["s4_source", "s4_sl", "s4_l", "s4_sa", "s4_a", "s4_sd", "s3_d"]):
 		print('here2')
 		sources = [str(index) + ': ' + formatChat(tele.bot, chat_id) for \
-            index, chat_id in enumerate(subscriptions)]
+            index, chat_id in enumerate(Source.source.keys())]
 		autoDestroy(msg.reply_text('Source list: \n\n' + '\n'.join(sources), 
             parse_mode='Markdown', 
             disable_web_page_preview=True))

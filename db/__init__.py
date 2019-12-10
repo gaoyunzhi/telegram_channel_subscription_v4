@@ -14,6 +14,7 @@ class _Source(object):
         except Exception as e:
             print(e)
             tb.print_exc()
+        if not self.source:
             self.source = {}
 
     def add(self, chat):
