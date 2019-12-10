@@ -5,7 +5,7 @@ from iterateMessage import iterateMessage
 from bs4 import BeautifulSoup
 import threading
 
-INTERVAL = 60 # 60 * 24 * 60	
+INTERVAL = 60 * 12 * 60	
 
 test_channel = -1001138008921
 
