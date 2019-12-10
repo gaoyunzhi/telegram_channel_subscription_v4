@@ -15,7 +15,7 @@ def commandImp(msg):
 	autoDestroy(msg)
 	command, text = splitCommand(msg.text)
 	if command == "s4_get":
-		return msg.reply_text(quote=False, iterateMessage(msg.chat.id))
+		return msg.reply_text(iterateMessage(msg.chat.id), quote=False)
 	elif command == "s4_subscribe":
 		Subscription.add(msg.chat.id, text)
 	elif command == "s4_source_add":
