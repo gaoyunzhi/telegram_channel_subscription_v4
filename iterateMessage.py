@@ -13,7 +13,8 @@ def iterateMessage(chat_id):
 	for url in random.sample(potential_urls, min(len(potential_urls), 2)):
 		Pool.add(url) # update url info
 	potential_urls = [(Pool.db[url]['view'], url) for url in potential_urls]
-	_, url = potential_urls.sort(reverse=True)[0]
+	potential_urls.sort(reverse=True)
+	_, url = potential_urls[0]
 	Sent.add(chat_id, url)
 	return url
 
