@@ -18,7 +18,6 @@ def getChatId(text):
 def commandImp(msg):
 	autoDestroy(msg)
 	command, text = splitCommand(msg.text)
-	print(command, text)
 	if "s4_g" in command:
 		return msg.reply_text(iterateMessage(msg.chat.id), quote=False)
 	elif matchKey(command, ["s4_source_add", "s4_sa", "s4_a"]):
@@ -34,7 +33,7 @@ def commandImp(msg):
 	if matchKey(command, ["s4_source", "s4_sl", "s4_l", "s4_sa", "s4_a", "s4_sd", "s3_d"]):
 		sources = [str(index) + ': ' + formatChat(tele.bot, chat_id) for \
             index, chat_id in enumerate(Source.source.keys())]
-		autoDestroy(msg.reply_text('Source list: \n\n' + '\n'.join(sources), 
+		autoDestroy(msg.reply_text('Source list: \n' + '\n'.join(sources), 
             parse_mode='Markdown', 
             disable_web_page_preview=True))
 	else:
