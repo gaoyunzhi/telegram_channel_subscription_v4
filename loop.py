@@ -1,7 +1,7 @@
-from .common import tele, debug_group
+from common import tele, debug_group
 from telegram_util import log_on_fail, getSoup
 from db import Subscription, Source, Pool
-from .iterateMessage import iterateMessage
+from iterateMessage import iterateMessage
 from bs4 import BeautifulSoup
 
 test_channel = -1001138008921
@@ -22,12 +22,12 @@ def loopImp():
 		for message_id in Source.iterate(chat_id, max_message_id):
 			msg = tele.bot.forward_message(test_channel, chat_id, message_id)
 			for item in msg.entities:
-			if (item["type"] == "url"):
-				url = msg.text[item["offset"]:][:item["length"]]
-				if not '://' in url:
-					url = "https://" + url
-				if '://telegra.ph' in url:
-					Pool.add(url)
+				if (item["type"] == "url"):
+					url = msg.text[item["offset"]:][:item["length"]]
+					if not '://' in url:
+						url = "https://" + url
+					if '://telegra.ph' in url:
+						Pool.add(url)
 	for chat_id in Subscription.subscription:
 		tele.bot.send_message(iterateMessage(chat_id))
 
