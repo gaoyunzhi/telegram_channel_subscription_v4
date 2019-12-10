@@ -35,3 +35,5 @@ def loop():
 	loopImp()
 	threading.Timer(INTERVAL, loop).start() 
 
+loop()
+
