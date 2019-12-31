@@ -19,13 +19,11 @@ def getMaxMessageId(soup):
 @log_on_fail(debug_group)
 def loopImp():
 	requests_count = 0
-	for chat_id in Source.db:
-		chat = tele.bot.getChat(chat_id)
-		soup = getSoup('https://telete.in/s/' + chat.username)
+	for chatname in Source.db:
+		soup = getSoup('https://telete.in/s/' + chatname)
 		max_message_id = getMaxMessageId(soup)
-		username = tele.bot.getChat(chat_id).username
-		for message_id in Source.iterate(chat_id, max_message_id):
-			url = "https://telete.in/%s/%d?embed=1" % (username, message_id)
+		for message_id in Source.iterate(chatname, max_message_id):
+			url = "https://telete.in/%s/%d?embed=1" % (chatname, message_id)
 			soup = getSoup(url)
 			text = soup.find('div', class_='tgme_widget_message_text')
 			requests_count += 1

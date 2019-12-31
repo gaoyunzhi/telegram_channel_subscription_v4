@@ -3,15 +3,12 @@
 
 from telegram.ext import Updater, MessageHandler, Filters
 
-from telegram_util import splitCommand, log_on_fail, autoDestroy, formatChat, matchKey, getChat
+from telegram_util import splitCommand, log_on_fail, autoDestroy, formatChat, matchKey
 from db import Source, Subscription
 import loop
 from common import tele, debug_group
 from iterateMessage import iterateMessage
 import traceback as tb
-
-def getChatId(text):
-	return getChat(tele.bot, text).id
 
 def commandImp(msg):
 	autoDestroy(msg)
@@ -19,9 +16,9 @@ def commandImp(msg):
 	if "s4_g" in command:
 		return msg.reply_text(iterateMessage(msg.chat.id), quote=False)
 	elif matchKey(command, ["s4_source_add", "s4_sa", "s4_a"]):
-		autoDestroy(msg.reply_text(Source.add(getChatId(text))))
+		autoDestroy(msg.reply_text(Source.add(text)))
 	elif matchKey(command, ["s4_source_delete", "s4_sd", "s4_d"]):
-		autoDestroy(msg.reply_text(Source.remove(getChatId(text))))
+		autoDestroy(msg.reply_text(Source.remove(text)))
 	elif matchKey(command, ["s4_source_list", "s4_sl", "s4_l"]):
 		pass # intentional
 	elif matchKey(command, ["s4_sub", "s4_s"]):
@@ -29,9 +26,7 @@ def commandImp(msg):
 	else:
 		return
 	if matchKey(command, ["s4_source", "s4_sl", "s4_l", "s4_sa", "s4_a", "s4_sd", "s3_d"]):
-		sources = [str(index) + ': ' + formatChat(tele.bot, chat_id) for \
-            index, chat_id in enumerate(Source.db.keys())]
-		autoDestroy(msg.reply_text('Source list: \n' + '\n'.join(sources), 
+		autoDestroy(msg.reply_text('Source list: \n' + '\n'.join(Source.db.keys()), 
             parse_mode='Markdown', 
             disable_web_page_preview=True))
 	else:

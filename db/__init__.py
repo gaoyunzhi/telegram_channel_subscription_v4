@@ -28,24 +28,24 @@ class _Source(DBClass):
     def __init__(self):
         super().__init__("source")
 
-    def add(self, chat_id):
-        if chat_id not in self.db:
-            self.db[chat_id] = 0
+    def add(self, chatname):
+        if chatname not in self.db:
+            self.db[chatname] = 0
             self.save()
             return 'success'
         return 'source already added'
 
-    def remove(self, chat_id):
-        if chat_id in self.db:
-            self.db.pop(chat_id, None)
+    def remove(self, chatname):
+        if chatname in self.db:
+            self.db.pop(chatname, None)
             return 'success'
         return 'no such source'
 
-    def iterate(self, chat_id, max):
-        while self.db[chat_id] < max:
-            self.db[chat_id] += 1
+    def iterate(self, chatname, max):
+        while self.db[chatname] < max:
+            self.db[chatname] += 1
             self.save()
-            yield self.db[chat_id]
+            yield self.db[chatname]
 
 class _Subscription(DBClass):
     def __init__(self):
