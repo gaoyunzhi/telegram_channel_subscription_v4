@@ -27,10 +27,10 @@ def commandImp(msg):
 		return
 	if matchKey(command, ["s4_source", "s4_sl", "s4_l", "s4_sa", "s4_a", "s4_sd", "s3_d"]):
 		sources = ['[%s](t.me/%s)' % (chatname, chatname) for \
-            chatname in Source.db.keys()]
+			chatname in Source.db.keys()]
 		autoDestroy(msg.reply_text('Source list: \n' + '\n'.join(sources), 
-            parse_mode='Markdown', 
-            disable_web_page_preview=True))
+			parse_mode='Markdown', 
+			disable_web_page_preview=True))
 	else:
 		autoDestroy(msg.reply_text("success"))
 
@@ -42,6 +42,7 @@ def command(update, context):
 		autoDestroy(msg.reply_text(str(e)))
 		tb.print_exc()
 		raise e
+
 
 tele.dispatcher.add_handler(MessageHandler(Filters.command, command))
 
