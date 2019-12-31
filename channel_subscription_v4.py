@@ -26,7 +26,9 @@ def commandImp(msg):
 	else:
 		return
 	if matchKey(command, ["s4_source", "s4_sl", "s4_l", "s4_sa", "s4_a", "s4_sd", "s3_d"]):
-		autoDestroy(msg.reply_text('Source list: \n' + '\n'.join(Source.db.keys()), 
+		sources = ['[%s](t.me/%s)' % (chatname, chatname) for \
+            chatname in Source.db.keys()]
+		autoDestroy(msg.reply_text('Source list: \n' + '\n'.join(sources), 
             parse_mode='Markdown', 
             disable_web_page_preview=True))
 	else:
